@@ -1,49 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registration Form</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+    </style>
 </head>
 <body>
-  <div class="container">
     <h2>Registration Form</h2>
-    <form id="registrationForm">
-      <label for="name">Name:</label>
-      <input type="text" id="name" required />
+    <form id="regForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" required><br><br>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" required />
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" required><br><br>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" required />
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" required><br><br>
 
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob" required />
+        <label for="dob">Date of Birth:</label><br>
+        <input type="date" id="dob" required><br><br>
 
-      <label>
-        <input type="checkbox" id="terms" required />
-        Accept Terms & Conditions
-      </label>
+        <label for="terms">Accept Terms:</label>
+        <input type="checkbox" id="terms" required><br><br>
 
-      <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
     </form>
 
-    <h3>Registered Users</h3>
+    <h2>Registered Users</h2>
     <table id="userTable">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Dob</th>
-          <th>Accepted terms?</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Dob</th>
+                <th>Accepted terms?</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
     </table>
-  </div>
-  <script src="index.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
