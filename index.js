@@ -24,7 +24,8 @@ function loadUsers() {
       <td>${user.email}</td>
       <td>${user.password}</td>
       <td>${user.dob}</td>
-      <td>${user.termsAccepted ? 'true' : 'false'}</td>
+      <td>${user.termsAccepted ? 'Yes' : 'No'}</td>
+
     `;
     tableBody.appendChild(tr);
   });
