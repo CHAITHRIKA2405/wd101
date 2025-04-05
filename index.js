@@ -1,78 +1,64 @@
-const form = document.getElementById("registrationForm");
-const tableBody = document.querySelector("#userTable tbody");
+document.getElementById('regForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-// Retrieve users from localStorage
-function getUsers() {
-  return JSON.parse(localStorage.getItem("users")) || [];
-}
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const dob = document.getElementById('dob').value;
+    const terms = document.getElementById('terms').checked;
 
-// Save user to localStorage
-function saveUser(user) {
-  const users = getUsers();
-  users.push(user);
-  localStorage.setItem("users", JSON.stringify(users));
-}
+    // Validate email (basic validation by HTML5 type="email" is sufficient)
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('Please enter a valid email address.');
+        return;
+    }
 
-// Load users to table
-function loadUsers() {
-  tableBody.innerHTML = "";
-  const users = getUsers();
-  users.forEach(user => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${user.name}</td>
-      <td>${user.email}</td>
-      <td>${user.password}</td>
-      <td>${user.dob}</td>
-      <td>${user.termsAccepted ? 'Yes' : 'No'}</td>
+    // Validate date of birth (18-55 years)
+    const today = new Date();
+    const birthDate = new Date(dob);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
 
-    `;
-    tableBody.appendChild(tr);
-  });
-}
+    if (age < 18 || age > 55) {
+        alert('Age must be between 18 and 55 years.');
+        return;
+    }
 
-// Age validation: 18–55
-function isValidAge(dob) {
-  const birthDate = new Date(dob);
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-  return age >= 18 && age <= 55;
-}
+    // Create user object
+    const user = { name, email, password, dob, terms };
 
-// Email validation
-function isValidEmail(email) {
-  const regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-  return regex.test(email);
-}
+    // Load existing data from localStorage
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+    // Add to table
+    addUserToTable(user);
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const dob = document.getElementById("dob").value;
-  const termsAccepted = document.getElementById("terms").checked;
-
-  if (!isValidEmail(email)) {
-    alert("Please enter a valid email.");
-    return;
-  }
-
-  if (!isValidAge(dob)) {
-    alert("You must be between 18 and 55 years old.");
-    return;
-  }
-
-  const user = { name, email, password, dob, termsAccepted };
-  saveUser(user);
-  loadUsers();
-  form.reset();
+    // Clear form
+    document.getElementById('regForm').reset();
 });
 
-// Load users when page loads
-window.onload = loadUsers;
+// Function to add user to table
+function addUserToTable(user) {
+    const tableBody = document.getElementById('tableBody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${user.name}</td>
+        <td>${user.email}</td>
+        <td>${user.password}</td>
+        <td>${user.dob}</td>
+        <td>${user.terms}</td>
+    `;
+    tableBody.appendChild(row);
+}
+
+// Load saved data on page load
+window.onload = function() {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    users.forEach(user => addUserToTable(user));
+};
